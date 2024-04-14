@@ -42,6 +42,7 @@ skill_id int NOT NULL AUTO_INCREMENT,
 skill_name varchar(25), 
 description  MEDIUMTEXT, 
 category varchar(50), 
+popularity int,
 PRIMARY KEY (skill_id)
 );
 
@@ -64,4 +65,26 @@ preferred_learning_style varchar(25),
 PRIMARY KEY (learning_Id), 
 FOREIGN KEY(learner_id) REFERENCES Learners(learner_id), 
 FOREIGN KEY(skill_id) REFERENCES Skills(skill_id)
+);
+
+CREATE TABLE Orders (
+  order_id INT AUTO_INCREMENT PRIMARY KEY,
+  order_cost DECIMAL(10, 2),
+  order_date DATE,
+  user_id INT,
+  user_name VARCHAR(255),
+  user_email VARCHAR(255),
+  user_phone VARCHAR(20),
+  user_city VARCHAR(255),
+  user_address VARCHAR(255),
+  FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE TABLE Order_Details (
+  order_id INT,
+  skill_id INT,
+  skill_name VARCHAR(255),
+  price DECIMAL(10, 2),
+  instructor VARCHAR(255),
+  category VARCHAR(255)
 );

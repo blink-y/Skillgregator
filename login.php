@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/style.css"/>
@@ -12,7 +12,7 @@
     <!--Navigation-Bar-->
     <nav class="navbar navbar-expand-lg navbar-light py-3 fixed-top" style="background-color: #111111">
         <div class="container">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="logo" src="assets/imgs/logo.png" />
             </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,19 +23,19 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
             
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="index.php">Home</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="Skills.html">Skills</a>
+                <a class="nav-link" href="Skills.php">Skills</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="cart.html">Cart</a>
+                <a class="nav-link" href="cart.php">Cart</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="account.html">Account</a>
+                <a class="nav-link" href="account.php">Account</a>
             </li>
             
             <!-- <form class="form-inline">
@@ -43,53 +43,45 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> -->
             <li class="nav-item">
-              <a class="nav-link" href="login.html">Login</a>
+              <a class="nav-link" href="login.php">Login</a>
             </li>
         </ul>
         </div>
         </div>
       </nav>
 
-      <!--Register-->
+      <!--login-->
       <section class="my-5 py-5">
         <div class="contaienr text-center mt-3 pt-5">
-            <h2 class="form-weight-bold">Register</h2>
+            <h2 class="form-weight-bold">Login</h2>
             <hr class="mx-auto">
         </div>
         <div class="mx-auto container">
-            <form id="reg-form">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" class="form-control" id="reg-username" name="username" placeholder="Username" required>
-                </div>
+            <form id="login-form">
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="text" class="form-control" id="reg-email" name="email" placeholder="Email" required>
+                    <input type="text" class="form-control" id="login-email" name="email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" id="reg-password" name="password" placeholder="Password" required>
-                </div> 
-                <div class="form-group">
-                    <label>Confirm Password</label>
-                    <input type="text" class="form-control" id="reg-confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
+                    <input type="password" class="form-control" id="login-password" name="password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
-                    <label>User Type</label>
-                    <div class="button-row">
-                        <input type="button" class="custom-btn" id="learner-btn" name="user-type" value="Learner">
-                        <input type="button" class="custom-btn" id="educator-btn" name="user-type" value="Educator">
-                    </div>
+                    <input type="submit" class="btn" id="login-btn" value="Login">
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn" id="reg-btn" value="Register">
-                </div>
-                <div class="form-group">
-                    <a id="reg-url" class="btn" href="login.html"> Do you have an account? Login</a>
+                    <p> Don't have an account? <a href="register.php">Register</a></p>
                 </div>
             </form>
         </div>
 
+      </section>
+
+      <!--Account-->
+      <section class="my-5 py-5">
+        <div class="text-center mt-3 pt-5 col-lg-6 col-md-12 col-sm-12">
+            
+        </div>
       </section>
 
 

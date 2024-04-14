@@ -246,6 +246,14 @@ footer {
 
 }
 
+.cart .remove-btn{
+    color: white;
+    background-color: black;
+    cursor: pointer;
+    font: 14px;
+    width: 100%;
+}
+
 td:last-child{text-align: right;}
 th:last-child{text-align: right;}
 
@@ -358,4 +366,10 @@ th:last-child{text-align: right;}
     margin: 10px;
     text-align: right;
     margin-right: 40px;
+}
+
+/* Order-Confirm */
+#order-confirm-sec {
+    padding-top: 200px;
+    padding-bottom: 50px;
 }

@@ -12,7 +12,7 @@
     <!--Navigation-Bar-->
     <nav class="navbar navbar-expand-lg navbar-light py-3 fixed-top" style="background-color: #111111">
         <div class="container">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="logo" src="assets/imgs/logo.png" />
             </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +27,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="Skills.html">Skills</a>
+                <a class="nav-link" href="Skills.php">Skills</a>
             </li>
             
             <li class="nav-item">
@@ -35,7 +35,7 @@
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="account.html">Account</a>
+                <a class="nav-link" href="account.php">Account</a>
             </li>
             
             <!-- <form class="form-inline">
@@ -43,7 +43,7 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> -->
             <li class="nav-item">
-              <a class="nav-link" href="login.html">Login</a>
+              <a class="nav-link" href="login.php">Login</a>
             </li>
         </ul>
         </div>
@@ -64,6 +64,7 @@
       <!--Recommendation-->
       <section id="recom">
         <h1 class="recom-title">Recommendations</h1>
+        <hr class="m-4">
         <div class="row p-0 m-0 justify-content-center d-flex">
         <?php include 'server/get_explore_skills.php'; ?>
         <?php while($row = $recom_skills->fetch_assoc()): ?>
@@ -88,6 +89,7 @@
         <div class="title">
             <h1>Explore</h1>
             <h5>Find out your new passion</h5>
+            <hr class="m-4">
         </div>
 
         <div class="row p-0 m-0">

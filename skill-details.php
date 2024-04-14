@@ -25,6 +25,19 @@ if(isset($_GET['skill_id'])){
     $stmt->execute();
     $educator = $stmt->get_result()->fetch_assoc();
 
+    try {
+        $stmt = $conn->prepare(
+            "SELECT *
+            FROM Teaching
+            WHERE skill_id = ?"
+        );
+        $stmt->bind_param("i", $skill_id);
+        $stmt->execute();
+        $price = $stmt->get_result()->fetch_assoc();
+    } catch (Exception $e) {
+        die("Error: " . $e->getMessage());
+    }
+
 } else {
     header("Location: index.php");
 }
@@ -44,7 +57,7 @@ if(isset($_GET['skill_id'])){
     <!--Navigation-Bar-->
     <nav class="navbar navbar-expand-lg navbar-light py-3 fixed-top" style="background-color: #111111">
         <div class="container">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="logo" src="assets/imgs/logo.png" />
             </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,20 +67,20 @@ if(isset($_GET['skill_id'])){
         <div class="collapse navbar-collapse nav-buttons" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
             
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
+          <li class="nav-item">
+                <a class="nav-link" href="index.php">Home</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="Skills.html">Skills</a>
+                <a class="nav-link" href="Skills.php">Skills</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="cart.html">Cart</a>
+                <a class="nav-link" href="cart.php">Cart</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="account.html">Account</a>
+                <a class="nav-link" href="account.php">Account</a>
             </li>
             
             <!-- <form class="form-inline">
@@ -75,7 +88,7 @@ if(isset($_GET['skill_id'])){
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> -->
             <li class="nav-item">
-              <a class="nav-link" href="login.html">Login</a>
+              <a class="nav-link" href="login.php">Login</a>
             </li>
         </ul>
         </div>
@@ -113,7 +126,9 @@ if(isset($_GET['skill_id'])){
                             <input type="hidden" name="skill_id" value="<?php echo $row['skill_id']; ?>">
                             <input type="hidden" name="instructor" value="<?php echo $educator['username']; ?>">
                             <input type="hidden" name="skill_category" value="<?php echo $row['category']; ?>">
+                            <input type="hidden" name="price" value="<?php echo $price['price']; ?>">
                             <button class="buy-btn mt-5" type="submit" name="add_to_cart">Add to Cart</button>
+                            <!-- add-skill-price -->
                         </form>
                     </div>
             <?php } ?>

@@ -12,7 +12,7 @@
     <!--Navigation-Bar-->
     <nav class="navbar navbar-expand-lg navbar-light py-3 fixed-top" style="background-color: #111111">
         <div class="container">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="logo" src="assets/imgs/logo.png" />
             </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -23,19 +23,19 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
             
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
+                <a class="nav-link" href="index.php">Home</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="Skills.html">Skills</a>
+                <a class="nav-link" href="Skills.php">Skills</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="cart.html">Cart</a>
+                <a class="nav-link" href="cart.php">Cart</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="account.html">Account</a>
+                <a class="nav-link" href="account.php">Account</a>
             </li>
             
             <!-- <form class="form-inline">
@@ -43,44 +43,43 @@
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> -->
             <li class="nav-item">
-              <a class="nav-link" href="login.html">Login</a>
+              <a class="nav-link" href="login.php">Login</a>
             </li>
         </ul>
         </div>
         </div>
       </nav>
 
-      <!--login-->
-      <section class="my-5 py-5">
-        <div class="contaienr text-center mt-3 pt-5">
-            <h2 class="form-weight-bold">Login</h2>
-            <hr class="mx-auto">
-        </div>
-        <div class="mx-auto container">
-            <form id="login-form">
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" class="form-control" id="login-email" name="email" placeholder="Email" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-control" id="login-password" name="password" placeholder="Password" required>
-                </div>
-                <div class="form-group">
-                    <input type="submit" class="btn" id="login-btn" value="Login">
-                </div>
-                <div class="form-group">
-                    <a id="register-url" class="btn" href="register.html"> Don't have an account? Register</a>
-                </div>
-            </form>
-        </div>
-
-      </section>
-
       <!--Account-->
       <section class="my-5 py-5">
-        <div class="text-center mt-3 pt-5 col-lg-6 col-md-12 col-sm-12">
-            
+        <div class="row container mx-auto">
+            <div class="text-center mt-3 pt-5 col-lg-6 col-md-12 col-sm-12">
+                <h3 class="font-weight-bold">Account Info</h3>
+                <hr class="mr-auto">
+                <div class="account-info">
+                    <p>Name<span>John</span></p>
+                    <p>Email<span>john@email.com</span></p>
+                    <p><a href="" id="orders-btn">Your Orders</a></p>
+                    <p><a href="" id="logout-btn">Logout</a></p>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <form id="account-form">
+                    <h3>Change Password</h3>
+                    <hr class="mx-auto">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" id="account-password" name="password" placeholder="password" required/>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" class="form-control" id="account-confirm-password" name="ConfirmPassword" placeholder="Confirm Password" required/>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Change Password" class="btn" id="change-pass-btn"/>
+                 </form>
+            </div>
+
         </div>
       </section>
 
@@ -120,7 +119,6 @@
 
           </div>
       </footer>
-  
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

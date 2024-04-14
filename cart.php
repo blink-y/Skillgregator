@@ -1,5 +1,68 @@
 <?php
-include 'connection.php';
+session_start();
+
+if (isset($_POST['add_to_cart'])) {
+
+    if (isset($_SESSION['cart'])) {
+
+        $skills_array_id = array_column($_SESSION['cart'], "skill_id");
+        if (!in_array($_POST['skill_id'], $skills_array_id)) {
+
+            $skill_id = $_POST['skill_id'];
+
+            $skill_array = array(
+                'skill_id' => $_POST['skill_id'],
+                'skill_name' => $_POST['skill_name'],
+                'price' => $_POST['price'],
+                'instructor' => $_POST['instructor'],
+                'skill_category' => $_POST['skill_category']
+            );
+
+            $_SESSION['cart'][$_POST['skill_id']] = $skill_array;
+        } else {
+            echo "<script>alert('Skill is already added to the cart')</script>";
+        }
+    } else {
+
+        $skill_id = $_POST['skill_id'];
+        $skill_name = $_POST['skill_name'];
+        $price = $_POST['price'];
+        $instructor = $_POST['instructor'];
+        $skill_category = $_POST['skill_category'];
+
+        $skill_array = array(
+            'skill_id' => $skill_id,
+            'skill_name' => $skill_name,
+            'price' => $price,
+            'instructor' => $instructor,
+            'skill_category' => $skill_category
+        );
+
+        $_SESSION['cart'][$skill_id] = $skill_array;
+        calc_Total();
+    }
+    calc_Total();
+} elseif (isset($_POST['remove_skill'])) {
+
+    $skill_id = $_POST['skill_id'];
+
+    if (array_key_exists($skill_id, $_SESSION['cart'])) {
+        unset($_SESSION['cart'][$skill_id]);
+    }
+    calc_Total();
+} else {
+    // header("Location: index.php");
+}
+
+    function calc_Total() {
+        $total = 0;
+        foreach($_SESSION['cart'] as $key => $value) {
+            $skill = $_SESSION['cart'][$key];
+            $price = $skill['price'];
+            $total = $total + $price;
+        }
+        $_SESSION['total'] = $total;
+    }
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +79,7 @@ include 'connection.php';
     <!--Navigation-Bar-->
     <nav class="navbar navbar-expand-lg navbar-light py-3 fixed-top" style="background-color: #111111">
         <div class="container">
-            <a href="index.html">
+            <a href="index.php">
                 <img class="logo" src="assets/imgs/logo.png" />
             </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,20 +89,20 @@ include 'connection.php';
         <div class="collapse navbar-collapse nav-buttons" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 ml-auto">
             
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Home</a>
+          <li class="nav-item">
+                <a class="nav-link" href="index.php">Home</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="Skills.html">Skills</a>
+                <a class="nav-link" href="Skills.php">Skills</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="cart.html">Cart</a>
+                <a class="nav-link" href="cart.php">Cart</a>
             </li>
             
             <li class="nav-item">
-                <a class="nav-link" href="account.html">Account</a>
+                <a class="nav-link" href="account.php">Account</a>
             </li>
             
             <!-- <form class="form-inline">
@@ -47,7 +110,7 @@ include 'connection.php';
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> -->
             <li class="nav-item">
-              <a class="nav-link" href="login.html">Login</a>
+              <a class="nav-link" href="login.php">Login</a>
             </li>
         </ul>
         </div>
@@ -63,112 +126,47 @@ include 'connection.php';
         <table class="mt-5 pt-5">
             <tr>
                 <th>Product</th>
-                <th>Quantity</th>
+                <th></th>
                 <th>Sub Total</th>
             </tr>
+            <?php foreach($_SESSION['cart'] as $key => $value) { ?>
             <tr>
                 <td>
                     <div class="product-info">
                         <img src="assets/imgs/item-1.jpg">
                         <div>
-                            <p>Skill Name</p>
-                            <small><span>$</span>Price</small>
+                            <p><?php echo $value['skill_name']?></p>
+                            <small><span>$</span><?php echo $value['price']?></small>
                             <br>
-                            <a class="remove-btn" href="#">Remove</a>
+                            <form method="POST" action="cart.php">
+                                <input type="hidden" name="skill_id" value="<?php echo $value['skill_id'];?>"/>
+                                <input type="submit" name="remove_skill" value="remove" class="remove-btn"/>
+
+                            </form>
                         </div>
                     </div>
                 </td>
-                <td>
-                    <input type="number" value="1"/>
-                    <a class="edit-btn">Edit</a>
-                </td>
+                <td></td>
                 <td>
                     <span>$</span>
-                    <span class="product-price">Price</span>
+                    <span class="product-price"><?php echo $value['price']?></span>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <div class="product-info">
-                        <img src="assets/imgs/item-1.jpg">
-                        <div>
-                            <p>Skill Name</p>
-                            <small><span>$</span>Price</small>
-                            <br>
-                            <a class="remove-btn" href="#">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <input type="number" value="1"/>
-                    <a class="edit-btn">Edit</a>
-                </td>
-                <td>
-                    <span>$</span>
-                    <span class="product-price">Price</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="product-info">
-                        <img src="assets/imgs/item-1.jpg">
-                        <div>
-                            <p>Skill Name</p>
-                            <small><span>$</span>Price</small>
-                            <br>
-                            <a class="remove-btn" href="#">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <input type="number" value="1"/>
-                    <a class="edit-btn">Edit</a>
-                </td>
-                <td>
-                    <span>$</span>
-                    <span class="product-price">Price</span>
-                </td>
-            </tr><tr>
-                <td>
-                    <div class="product-info">
-                        <img src="assets/imgs/item-1.jpg">
-                        <div>
-                            <p>Skill Name</p>
-                            <small><span>$</span>Price</small>
-                            <br>
-                            <a class="remove-btn" href="#">Remove</a>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <input type="number" value="1"/>
-                    <a class="edit-btn">Edit</a>
-                </td>
-                <td>
-                    <span>$</span>
-                    <span class="product-price">Price</span>
-                </td>
-            </tr>
+            <?php } ?>
         </table>
         <div class="cart-total">
             <table>
                 <tr>
-                    <td>
-                        Subtotal
-                    </td>
-                    <td>
-                        $ Total
-                    </td>
-                </tr>
-                <tr>
                     <td>Total Amount</td>
-                    <td>$ Total</td>
+                    <td>$ <?php echo $_SESSION['total']?></td>
                 </tr>
             </table>
         </div>
 
         <div class="checkout-container">
-            <button class="checkout-btn">Checkout</button>
+            <form method="POST" action="checkout.php">
+                <input type="submit" class="btn checkout-btn" value="Checkout" name="checkout"/>
+            </form>
         </div>
       </section>
 
