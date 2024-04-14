@@ -76,12 +76,7 @@
                     <p class="text-center mt-2" style="color: black"><?php echo $row['skill_name']?></p>
                 </a>
             </div>
-            <!-- <div class="col-lg-3 col-md-6 col-sm-12">
-                <a href="#">
-                    <img class="img-fluid" src="assets/imgs/item-1.jpg" alt="Image 1"/>
-                    <p class="text-center mt-2">Clickable Text 1</p>
-                </a>
-            </div> -->
+           
         <?php endwhile ?>
         </div>
       </section>
