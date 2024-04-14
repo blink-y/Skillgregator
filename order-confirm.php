@@ -49,12 +49,55 @@
         </div>
         </div>
       </nav>
+
       <!--Order-Confirm-->
-      <section id="order-confirm-sec">
-        <div class="container">
-            <h1 class="text-center py-5">Order Confirmed</h1>
-            <p class="text-center">Thank you for shopping with us. Your order has been confirmed and will be delivered to you soon.</p>
-        </div>
+        <section class="my-5 y-5">
+            <div class="container text-center mt-3 pt-5">
+                <h1 class="container text-center mt-3 pt-5"> Order Confirmed</h1>
+                <hr class="mx-auto">
+            </div>
+            <div class="mx-auto text-center container pb-5">
+                <p>Thank you for your order. We will be in touch with you shortly.</p>
+            </div>
+
+
+
+
+      <!--footer-->
+        <footer class="mt-5 py-5" style="background-color: #111111">
+            <div class="row container mx-auto pt-5">
+                <div class="footer-one col-lg-3 col-md-6 col-sm-12">
+                    <img class="logo" src="assets/imgs/logo.png"/>
+                    <p class="pt-3" style="color: #fff">One stop for all the skills you want to master</p>
+                </div>
+                <div class="footer-one col-lg-3 col-md-6 col-sm-12 " style="color: #fff">
+                    <h5 class="pb-2">Featured</h5>
+                    <ul class="text-uppercase">
+                        <li><a href='#'>Explore</a></li>
+                        <li><a href='#'>Skills</a></li>
+                        <li><a href='#'>Contact us</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="footer-one col-lg-3 col-md-6 col-sm-12" style="color: #F0EDCF">
+                    <h5 class="pb-2">Contact Us</h5> 
+                    <div>
+                        <h6 class="text-uppercase">Address</h6>
+                        <p>Sessame Street</p>
+                    </div>
+                    <div>
+                        <h6 class="text-uppercase">Phone</h6>
+                        <p>911</p>
+                    </div>
+                    <div>
+                        <h6 class="text-uppercase">Email</h6>
+                        <p>customerservice@Skillgregator.com</p>
+                    </div>
+                </div> 
+
+
+            </div>
+        </footer>
     
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

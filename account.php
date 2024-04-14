@@ -1,3 +1,47 @@
+<?php
+
+include 'server/connection.php';
+session_start();
+
+if (!isset($_SESSION['logged_in'])) {
+    header('Location: login.php');
+    exit();
+}
+
+if(isset($_GET['logout'])){
+    if (isset($_SESSION['logged_in'])) {
+        
+        unset($_SESSION['logged_in']);
+        unset($_SESSION['username']);
+        unset($_SESSION['email']);
+
+        unset($_SESSION['user_type']);
+        header('Location: login.php');
+        exit();
+    }
+}
+
+if(isset($_POST['change_password'])) {
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['ConfirmPassword'];
+
+    if ($password !== $confirmPassword) {
+        header('Location: account.php?error=Passwords do not match');
+    } else if (strlen($password) < 8) {
+        header('Location: account.php?error=Password must be at least 8 characters');
+    } else {
+        $stmt = $conn->prepare("UPDATE Users SET password = ? WHERE email = ?") or die("Connection failed: " . mysqli_connect_error());
+        $stmt->bind_param("ss", md5($password), $_SESSION['email']);
+        if ($stmt->execute()) {
+            header('Location: account.php?message=Password changed successfully');
+        } else {
+            header('Location: account.php?error=Password change failed. Please try again later.');
+        }
+    }
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,37 +95,52 @@
       </nav>
 
       <!--Account-->
-      <section class="my-5 py-5">
-        <div class="row container mx-auto">
-            <div class="text-center mt-3 pt-5 col-lg-6 col-md-12 col-sm-12">
-                <h3 class="font-weight-bold">Account Info</h3>
-                <hr class="mr-auto">
-                <div class="account-info">
-                    <p>Name<span>John</span></p>
-                    <p>Email<span>john@email.com</span></p>
-                    <p><a href="" id="orders-btn">Your Orders</a></p>
-                    <p><a href="" id="logout-btn">Logout</a></p>
+    </head>
+    <body>
+          <section class="my-5 py-5">
+            <div class="row container mx-auto">
+                <div class="text-center mt-3 pt-5 col-lg-6 col-md-12 col-sm-12">
+                    <h3 class="font-weight-bold">Account Info</h3>
+                    <hr class="mr-auto">
+                    <div class="account-info">
+                        <p>Name: <span> <?php if(isset($_SESSION['username'])){echo $_SESSION['username'];}?> </span></p>
+                        <p>Email: <span> <?php if(isset($_SESSION['email'])){echo $_SESSION['email'];}?> </span></p>
+                        <p>User Type: <span><?php echo $_SESSION['user_type'];?></span></p>
+                        <p><a href="account.php?logout=1" id="logout-btn">Logout</a></p>
+                    </div>
                 </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <form id="account-form" method="POST" action="account.php">
+                        <h3>Change Password</h3>
+                        <hr class="mx-auto">
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" id="account-password" name="password" placeholder="password" required/>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" class="form-control" id="account-confirm-password" name="ConfirmPassword" placeholder="Confirm Password" required/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Change Password" class="btn" id="change-pass-btn" name="change_password"/>
+                        </div>
+                        <p class="text-center" style="color: red"><?php if(isset($_GET['error'])){echo $_GET['error'];}?></p>
+                        <p class="text-center" style="color: green"><?php if(isset($_GET['message'])){echo $_GET['message'];}?></p>
+                    </form>
+                </div>
+                <!-- Need to Add functionality -->
+                <!-- <div class="col-lg-6 col-md-12 col-sm-12">
+                    <form id="account-form" method="POST" action="account.php">
+                        <h3>Change Learning Goals</h3>
+                        <hr class="mx-auto">
+                        <div class="form-group">
+                            <input type="" class="form-control" id="account-email" name="email" placeholder="Email" required/>
+                        </div>
+                </div> -->
             </div>
-            <div class="col-lg-6 col-md-12 col-sm-12">
-                <form id="account-form">
-                    <h3>Change Password</h3>
-                    <hr class="mx-auto">
-                    <div class="form-group">
-                        <label>Password</label>
-                        <input type="password" class="form-control" id="account-password" name="password" placeholder="password" required/>
-                    </div>
-                    <div class="form-group">
-                        <label>Confirm Password</label>
-                        <input type="password" class="form-control" id="account-confirm-password" name="ConfirmPassword" placeholder="Confirm Password" required/>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Change Password" class="btn" id="change-pass-btn"/>
-                 </form>
-            </div>
-
-        </div>
-      </section>
+          </section>
+    </body>
+    </html>
 
 
       <!--footer-->

@@ -1,3 +1,53 @@
+<?php
+
+include 'server/connection.php';
+session_start();
+
+if(isset($_POST['register'])) {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirmPassword'];
+    $userType = $_POST['user-type'];
+
+    if ($password !== $confirmPassword) {
+        header('Location: register.php?error=Passwords do not match');
+    } else if (strlen($password) < 8) {
+        header('Location: register.php?error=Password must be at least 8 characters');
+    } else {
+        // Check for existing user
+        $stmt = $conn->prepare("SELECT count(*) FROM Users WHERE username = ? OR email = ?") or die("Connection failed: " . mysqli_connect_error());
+        $stmt->bind_param("ss", $username, $email);
+        $stmt->execute();
+        $stmt->bind_result($num_rows);
+        $stmt->store_result();
+        $stmt->fetch();
+        if ($num_rows > 0) {
+            header('Location: register.php?error=Username or email already exists');
+
+        } else {
+            $stmt = $conn->prepare("INSERT INTO Users (username, email, password, user_type) VALUES (?, ?, ?, ?)") or die("Connection failed: " . mysqli_connect_error());
+            $stmt->bind_param("ssss", $username, $email, md5($password), $userType);
+            
+            if($stmt->execute()){
+                $_SESSION['username'] = $username;
+                $_SESSION['email'] = $email;
+                $_SESSION['user_type'] = $userType;
+                $_SESSION['logged_in'] = true;
+                header('Location: account.php?success=Registration successful');
+            } else {
+                header('Location: register.php?error=Registration failed. Please try again in an eternity.');
+            }
+        }
+    }
+}
+// } else if (isset($_SESSION['logged_in'])) {
+//     header('Location: account.php');
+//     exit();
+// }
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,14 +100,15 @@
         </div>
       </nav>
 
-      <!--Register-->
+    <!--Register-->
       <section class="my-5 py-5">
         <div class="contaienr text-center mt-3 pt-5">
             <h2 class="form-weight-bold">Register</h2>
             <hr class="mx-auto">
         </div>
         <div class="mx-auto container">
-            <form id="reg-form">
+            <form id="reg-form" method="POST" action="register.php">
+                <p style="color: red"><?php if(isset($_GET['error'])){echo $_GET['error'];}?></p>
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" class="form-control" id="reg-username" name="username" placeholder="Username" required>
@@ -72,28 +123,33 @@
                 </div> 
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="text" class="form-control" id="reg-confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
+                    <input type="password" class="form-control" id="reg-confirm-password" name="confirmPassword" placeholder="Confirm Password" required>
                 </div>
                 <div class="form-group">
                     <label>User Type</label>
-                    <div class="button-row">
-                        <input type="button" class="custom-btn" id="learner-btn" name="user-type" value="Learner">
-                        <input type="button" class="custom-btn" id="educator-btn" name="user-type" value="Educator">
+                    <div class="custom-btn">
+                        <label>
+                            <input type="radio" id="learner-btn" name="user-type" value="Learner" checked>
+                            learner
+                        </label>
+                        <label>
+                            <input type="radio" id="educator-btn" name="user-type" value="Educator">
+                            educator
+                        </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn" id="reg-btn" value="Register">
+                    <input type="submit" class="btn" id="reg-btn" name="register" value="Register">
                 </div>
                 <div class="form-group">
                     <a id="reg-url" class="btn" href="login.html"> Do you have an account? Login</a>
+                </form>
                 </div>
-            </form>
         </div>
 
       </section>
 
-
-      <!--footer-->
+    <!--footer-->
       <footer class="mt-5 py-5" style="background-color: #111111">
         <div class="row container mx-auto pt-5">
             <div class="footer-one col-lg-3 col-md-6 col-sm-12">

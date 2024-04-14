@@ -1,3 +1,43 @@
+<?php
+
+include 'server/connection.php';
+session_start();
+
+// if (isset($_SESSION['logged_in'])) {
+//     header('Location: account.php');
+//     exit();
+// }
+
+if (isset($_POST['login_btn'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $stmt = $conn->prepare("SELECT * FROM Users WHERE email = ? AND password = ? LIMIT 1") or die("Connection failed: " . mysqli_connect_error());
+    $stmt->bind_param("ss", $email, md5($password));
+
+    if ($stmt->execute()) {
+        $result = $stmt->get_result();
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+
+            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['email'] = $row['email'];
+            $_SESSION['user_type'] = $row['user_type'];
+            $_SESSION['logged_in'] = true;
+
+            header('Location: account.php?message=Login successful');
+            exit();
+        } else {
+            header('Location: login.php?error=Account not found. Please register first.');
+            exit();
+        }
+    } else {
+        header('Location: login.php?error=I am too underpaid for this. Please try again later.');
+        exit();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +97,8 @@
             <hr class="mx-auto">
         </div>
         <div class="mx-auto container">
-            <form id="login-form">
+            <form id="login-form" method="POST" action="login.php">
+                <p style="color: red"><?php if(isset($_GET['error'])){echo $_GET['error'];}?></p>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" class="form-control" id="login-email" name="email" placeholder="Email" required>
@@ -67,7 +108,7 @@
                     <input type="password" class="form-control" id="login-password" name="password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn" id="login-btn" value="Login">
+                    <input type="submit" class="btn" id="login-btn" name="login_btn" value="Login">
                 </div>
                 <div class="form-group">
                     <p> Don't have an account? <a href="register.php">Register</a></p>
