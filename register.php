@@ -5,6 +5,7 @@ session_start();
 
 if(isset($_POST['register'])) {
     $username = $_POST['username'];
+    $fullname = $_POST['fullname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
@@ -31,9 +32,23 @@ if(isset($_POST['register'])) {
             
             if($stmt->execute()){
                 $_SESSION['username'] = $username;
+                $_SESSION['user_id'] = $stmt->insert_id;
                 $_SESSION['email'] = $email;
                 $_SESSION['user_type'] = $userType;
                 $_SESSION['logged_in'] = true;
+
+                if ($userType == 'educator') {
+                    $stmt = $conn->prepare("INSERT INTO Educators (user_id, full_name) VALUES (?,?)") or die("Connection failed: " . mysqli_connect_error());
+                    $stmt->bind_param("is", $_SESSION['user_id'], $fullname);
+                    $stmt->execute();
+                } else if ($userType == 'learner'){
+                    $stmt = $conn->prepare("INSERT INTO Learners (user_id, full_name) VALUES (?,?)") or die("Connection failed: " . mysqli_connect_error());
+                    $stmt->bind_param("is", $_SESSION['user_id'], $fullname);
+                    $stmt->execute();
+                } else {
+                    header('Location: register.php?error=Invalid user type');
+                }
+
                 header('Location: account.php?success=Registration successful');
             } else {
                 header('Location: register.php?error=Registration failed. Please try again in an eternity.');
@@ -41,11 +56,6 @@ if(isset($_POST['register'])) {
         }
     }
 }
-// } else if (isset($_SESSION['logged_in'])) {
-//     header('Location: account.php');
-//     exit();
-// }
-
 ?>
 
 <!DOCTYPE html>
@@ -113,6 +123,12 @@ if(isset($_POST['register'])) {
                     <label>Username</label>
                     <input type="text" class="form-control" id="reg-username" name="username" placeholder="Username" required>
                 </div>
+
+                <div class="form-group">
+                    <label>Full name</label>
+                    <input type="text" class="form-control" id="reg-fullname" name="fullname" placeholder="Full Name" required>
+                </div>
+
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" class="form-control" id="reg-email" name="email" placeholder="Email" required>
@@ -129,12 +145,12 @@ if(isset($_POST['register'])) {
                     <label>User Type</label>
                     <div class="custom-btn">
                         <label>
-                            <input type="radio" id="learner-btn" name="user-type" value="Learner" checked>
-                            learner
+                            <input type="radio" id="learner-btn" name="user-type" value="learner" checked>
+                            Learner
                         </label>
                         <label>
-                            <input type="radio" id="educator-btn" name="user-type" value="Educator">
-                            educator
+                            <input type="radio" id="educator-btn" name="user-type" value="educator">
+                            Educator
                         </label>
                     </div>
                 </div>

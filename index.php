@@ -55,8 +55,10 @@
         <div class="container">
             <h5>Welcome to</h5>
             <h1>Skillgregator</h1>
-            <p>Easy Skills for all</p>
-            <button>Shop Now</button>
+            <p><span>"Skillgregator, the epitome of human progress and empowerment, stands as a shining beacon in the realm of skill acquisition and personal growth. It is a sanctuary where dreams are nurtured, passions are ignited, and the uncharted territories of human potential are explored. Skillgregator is not merely a platform; it is an extraordinary catalyst that has revolutionized the way we learn and develop ourselves.
+                    At its core, Skillgregator thrives on the profound belief that every person possesses a unique gift waiting to be discovered. It celebrates the diversity of human potential, enabling individuals to weave their own narratives of success and fulfillment. By providing an expansive repertoire of easy-to-learn skills, Skillgregator empowers individuals to transcend their limitations, break free from self-imposed boundaries, and embark on a transformative journey of self-discovery.
+            "</span><span style="font-weight: 400; font-style: italic;">- said literally no one ever</span></p>
+            <a href="Skills.php"><button style="width: 150px">Explore Skills</button></a>
         </div>
       </section>
 
@@ -71,7 +73,7 @@
             <div class="col-lg-3 col-md-6 col-sm-12">
                 <a href="<?php echo "skill-details.php?skill_id=".$row['skill_id'];?>">
                     <img class="img-fluid" src="assets/imgs/item-1.jpg" alt="Image 1"/>
-                    <p class="text-center mt-2"><?php echo $row['skill_name']?></p>
+                    <p class="text-center mt-2" style="color: black"><?php echo $row['skill_name']?></p>
                 </a>
             </div>
             <!-- <div class="col-lg-3 col-md-6 col-sm-12">
@@ -99,8 +101,7 @@
                     <img class="img-fluig" src="assets/imgs/item-1.jpg"/>
                     <div class="details">
                         <h2> <?php echo $row['category']; ?> </h2>
-                        <h5><?php echo $row['skill_id']; ?></h5>
-                        <a href="<?php echo "skill-details.php?skill_id=".$row['skill_id'];?>"><button class="text-uppercase">Learn more</button></a>
+                        <a href="<?php echo "skill-category.php?category=".$row['category'];?>"><button class="text-uppercase" style="width:150px">Learn more</button></a>
                     </div>
                 </div>
         <?php endwhile ?>

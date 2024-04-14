@@ -40,6 +40,59 @@ if(isset($_POST['change_password'])) {
     }
 }
 
+if(isset($_POST['change_lg_sl'])) {
+    $learning_goals = $_POST['LearningGoals'];
+    $skill_level = $_POST['skill-lvl'];
+
+    $stmt = $conn->prepare("SELECT * FROM Learners WHERE user_id = ?") or die("Connection failed: " . mysqli_connect_error());
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 0) {
+        $stmt = $conn->prepare("INSERT INTO Learners (user_id, learning_goals, current_skill_level) VALUES (?, ?, ?)") or die("Connection failed: " . mysqli_connect_error());
+        $stmt->bind_param("iss", $_SESSION['user_id'], $learning_goals, $skill_level);
+        if ($stmt->execute()) {
+            header('Location: account.php?message=Learning goals and skill level updated successfully');
+        } else {
+            header('Location: account.php?error=Learning goals and skill level update failed. Please try again later.');
+        }
+    } else {
+        $stmt = $conn->prepare("UPDATE Learners SET learning_goals = ?, current_skill_level = ? WHERE user_id = ?") or die("Connection failed: " . mysqli_connect_error());
+        $stmt->bind_param("ssi", $learning_goals, $skill_level, $_SESSION['user_id']);
+        if ($stmt->execute()) {
+            header('Location: account.php?message=Learning goals and skill level updated successfully');
+        } else {
+            header('Location: account.php?error=Learning goals and skill level update failed. Please try again later.');
+        }
+    }
+}
+if(isset($_POST['add_ed_ex'])) {
+    $ed_background = $_POST['EdBackground'];
+    $experiences = $_POST['Experiences'];
+
+    $stmt = $conn->prepare("SELECT * FROM Educators WHERE user_id = ?") or die("Connection failed: " . mysqli_connect_error());
+    $stmt->bind_param("i", $_SESSION['user_id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows == 0) {
+        $stmt = $conn->prepare("INSERT INTO Educators (user_id, education_background, experience) VALUES (?, ?, ?)") or die("Connection failed: " . mysqli_connect_error());
+        $stmt->bind_param("iss", $_SESSION['user_id'], $ed_background, $experiences);
+        if ($stmt->execute()) {
+            header('Location: account.php?message=Educational background and experiences updated successfully');
+        } else {
+            header('Location: account.php?error=Educational background and experiences update failed. Please try again later.');
+        }
+    } else {
+        $stmt = $conn->prepare("UPDATE Educators SET education_background = ?, experience = ? WHERE user_id = ?") or die("Connection failed: " . mysqli_connect_error());
+        $stmt->bind_param("ssi", $ed_background, $experiences, $_SESSION['user_id']);
+        if ($stmt->execute()) {
+            header('Location: account.php?message=Educational background and experiences updated successfully');
+        } else {
+            header('Location: account.php?error=Educational background and experiences update failed. Please try again later.');
+        }
+    }
+
+}
 
 ?>
 <!DOCTYPE html>
@@ -128,15 +181,61 @@ if(isset($_POST['change_password'])) {
                         <p class="text-center" style="color: green"><?php if(isset($_GET['message'])){echo $_GET['message'];}?></p>
                     </form>
                 </div>
-                <!-- Need to Add functionality -->
-                <!-- <div class="col-lg-6 col-md-12 col-sm-12">
-                    <form id="account-form" method="POST" action="account.php">
+            </div>
+            <!-- Need to Add functionality -->
+            <div>
+            <?php
+                // Only Visible to Learners
+                if ($_SESSION['user_type'] == 'learner') {
+                    //FIXME: Formatting
+                    echo '
+                    <form id="account-form-learner" method="POST" action="account.php">
                         <h3>Change Learning Goals</h3>
                         <hr class="mx-auto">
-                        <div class="form-group">
-                            <input type="" class="form-control" id="account-email" name="email" placeholder="Email" required/>
+                        <div class="h-50 w-70 mr-20 text-align: center">
+                            <input type="text" class="h-50 w-50" id="account-learning-goals" name="LearningGoals" placeholder="Learning goals" style="margin-bottom: 20px;" required/>
+                            <h3>Current Skill Level</h3>
+                            <hr class="mx-auto">
+                            <div class="custom-btn">
+                                <label>
+                                    <input type="radio" id="beginner-btn" name="skill-lvl" value="Beginner" checked>
+                                    Beginner
+                                </label>
+                                <label>
+                                    <input type="radio" id="novice-btn" name="skill-lvl" value="Novice">
+                                    Novice
+                                </label>
+                                <label>
+                                    <input type="radio" id="intermediate-btn" name="skill-lvl" value="Intermediate">
+                                    Intermediate
+                                </label>
+                                <label>
+                                    <input type="radio" id="advanced-btn" name="skill-lvl" value="Advanced">
+                                    Advanced
+                                </label>
+                            </div>
+                            <input type="submit" value="Save Changes" class="btn" id="change-lg-sk-btn" name="change_lg_sl" style="margin-top: 10px; margin-bottom: 20px;">
                         </div>
-                </div> -->
+                    </form>';
+                    
+                } else if($_SESSION['user_type'] == 'educator'){
+                    //Only Visible to Educators
+                    echo '
+                    <form id="account-form-educator" method="POST" action="account.php">
+                        <h3>Add Educational Background</h3>
+                        <hr class="mx-auto">
+                        <div class="h-50 w-70 mr-20 text-align: center">
+                            <input type="text" class="h-50 w-50" id="account-ed-background" name="EdBackground" placeholder="Enter Educational Background" style="margin-bottom: 20px;" required/> 
+                        </div>
+                        <h3>Add Experiences</h3>
+                        <hr class="mx-auto">
+                        <div class="h-50 w-70 mr-20 text-align: center">
+                            <input type="text" class="h-50 w-50" id="account-experiences" name="Experiences" placeholder="Enter Experiences" style="margin-bottom: 20px;" required/>
+                        </div>
+                        <input type="submit" value="Save Changes" class="btn" id="add-ed-ex" name="add_ed_ex" style="margin-top: 10px; margin-bottom: 20px;">
+                    </form>';
+                }
+            ?>
             </div>
           </section>
     </body>

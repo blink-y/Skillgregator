@@ -1,10 +1,14 @@
 <?php
     include 'server/connection.php';
-    session_start();
-
-    $stmt = $conn->prepare("SELECT DISTINCT category FROM Skills") or die("Connection failed: " . mysqli_connect_error());
-    $stmt->execute();
-    $skills = $stmt->get_result();
+    if(isset($_GET['category'])) {
+        $category = $_GET['category'];
+        $stmt = $conn->prepare("SELECT skill_name, skill_id FROM Skills WHERE category = ?") or die("Connection failed: " . mysqli_connect_error());
+        $stmt->bind_param("s", $category);
+        $stmt->execute();
+        $skills = $stmt->get_result();
+    } else {
+        header("Location: Skills.php");
+    }
 
 ?>
 <!DOCTYPE html>
@@ -58,15 +62,16 @@
         </div>
       </nav>
 
-    <!--Skill-catergory-->
-     <section id="new" class="w-100">
+    <!--Categorised Skills-->
+
+    <section id="new" class="w-100">
         <div class="row p-0 m-0">
             <?php while ($row = $skills->fetch_assoc()) { ?>
                 <div class="one col-lg-4 col-md-6 col-sm-12 p-0">
                     <img class="img-fluig" src="assets/imgs/item-1.jpg"/>
                     <div class="details">
-                        <h2><?php echo $row['category']; ?></h2>
-                        <a href="<?php echo "skill-category.php?category=".$row['category'];?>"><button class="text-uppercase" style="width: 100px">View</button><a>
+                        <h2><?php echo $row['skill_name']; ?></h2>
+                        <a href="<?php echo "skill-details.php?skill_id=".$row['skill_id'];?>"><button class="text-uppercase" style="width: 100px">View</button><a>
                     </div>
                 </div>
             <?php } ?>
